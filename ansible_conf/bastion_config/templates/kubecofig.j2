@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Config
+
+clusters:
+- name: eks
+  cluster:
+    server: {{ eks_endpoint }}
+    certificate-authority-data: {{ eks_ca }}
+
+contexts:
+- name: eks-context
+  context:
+    cluster: eks
+    user: aws
+
+current-context: eks-context
+
+users:
+- name: aws
+  user:
+    exec:
+      apiVersion: client.authentication.k8s.io/v1beta1
+      command: aws
+      args:
+        - eks
+        - get-token
+        - --cluster-name
+        - {{ eks_cluster_name }}

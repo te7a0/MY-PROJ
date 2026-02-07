@@ -1,0 +1,9 @@
+---
+- name: Configure Bastion EC2 with Docker, kubectl, Helm, AWS CLI
+  hosts: ec2_instances
+
+  vars_files:
+    - terraform_outputs.json
+  roles:
+    - bastion_config     # Docker + kubectl + AWS CLI + Helm
+    - ansible_helm       #  Prometheus + Grafana + Jenkins + NodeExporter

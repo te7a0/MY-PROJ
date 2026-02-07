@@ -1,0 +1,4 @@
+monitoring_namespace: monitoring
+ci_namespace: ci
+
+grafana_admin_password: admin

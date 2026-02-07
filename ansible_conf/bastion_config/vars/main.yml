@@ -1,0 +1,9 @@
+---
+docker_packages:
+  - yum-utils
+  - device-mapper-persistent-data
+  - lvm2
+
+kubectl_version: "v1.27.3"
+helm_version: "v3.13.4"
+

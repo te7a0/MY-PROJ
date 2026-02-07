@@ -1,0 +1,39 @@
+# namespaces
+- name: Create monitoring namespace
+  shell: kubectl create namespace {{ monitoring_namespace }} --dry-run=client -o yaml | kubectl apply -f -
+
+- name: Create ci namespace
+  shell: kubectl create namespace {{ ci_namespace }} --dry-run=client -o yaml | kubectl apply -f -
+
+# repos
+- name: Add helm repos
+  shell: |
+    helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+    helm repo add grafana https://grafana.github.io/helm-charts
+    helm repo add jenkins https://charts.jenkins.io
+    helm repo update
+
+# node exporter
+- name: Install Node Exporter
+  shell: |
+    helm upgrade --install node-exporter prometheus-community/prometheus-node-exporter \
+    --namespace {{ monitoring_namespace }}
+
+# prometheus
+- name: Install Prometheus
+  shell: |
+    helm upgrade --install prometheus prometheus-community/prometheus \
+    --namespace {{ monitoring_namespace }}
+
+# grafana
+- name: Install Grafana
+  shell: |
+    helm upgrade --install grafana grafana/grafana \
+    --namespace {{ monitoring_namespace }} \
+    --set adminPassword={{ grafana_admin_password }}
+
+# jenkins
+- name: Install Jenkins
+  shell: |
+    helm upgrade --install jenkins jenkins/jenkins \
+    --namespace {{ ci_namespace }}
