@@ -2,4 +2,4 @@
 providers
 *.terraform
 modules
-*.hcl
+*.terraform.lock.hcl
